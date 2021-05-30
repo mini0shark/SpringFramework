@@ -1,4 +1,4 @@
-package com.example.sprstart;
+package chap02;
 
 public class Greeter {
 	private String format;

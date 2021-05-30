@@ -1,4 +1,4 @@
-package com.example.sprstart;
+package chap02;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -14,6 +14,6 @@ public class Main {
 		Greeter g2 = ctx.getBean("greeter", Greeter.class);	// 메서드 이름, 리턴타입
 		g1.greet("abc");
 		System.out.println("(g1==g2)="+(g1==g2));
-		ctx.close();		
+		ctx.close();
 	}
 }
