@@ -8,10 +8,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import chap03.config.AppCtx;
+import chap03.config.AppCtx1;
+import chap03.config.AppCtx2;
 import chap03.exceptions.DuplicateMemberException;
 import chap03.exceptions.MemberNotFoundException;
 import chap03.exceptions.WrongIdPasswordException;
+import chap03.member.MemberInfoPrinter;
 import chap03.member.MemberListPrinter;
+import chap03.member.VersionPrinter;
 import chap03.services.ChangePasswordService;
 import chap03.services.MemberRegisterService;
 import chap03.services.RegisterRequest;
@@ -19,7 +23,8 @@ import chap03.services.RegisterRequest;
 public class MainForSpring {
 	private static ApplicationContext ctx = null;
 	public static void main(String[] args) throws IOException {
-		ctx=new AnnotationConfigApplicationContext(AppCtx.class);
+		//ctx=new AnnotationConfigApplicationContext(AppCtx.class);
+		ctx=new AnnotationConfigApplicationContext(AppCtx1.class, AppCtx2.class);
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -39,12 +44,17 @@ public class MainForSpring {
 			}else if(command.startsWith("list")) {
 				processListCommand();
 				continue;
+			}else if(command.startsWith("info")) {
+				processInfoCommand(command.split(" "));
+				continue;
+			}else if(command.startsWith("version")) {
+				processVersionCommand();
+				continue;
 			}
 			printHelp();
 		}
 	}
 	
-
 	private static void processNewCommand(String[] arg) {
 		if(arg.length!=5) {
 			printHelp();
@@ -67,7 +77,7 @@ public class MainForSpring {
 			System.out.println("이미 존재하는 이메일 입니다.\n");
 		}
 	}
-
+	
 	private static void processChangeCommand(String[] arg) {
 		if(arg.length!=4) {
 			printHelp();
@@ -83,8 +93,6 @@ public class MainForSpring {
 		}catch(WrongIdPasswordException e) {
 			System.out.println("이메일과 암호가 일치하지 않습니다.\n");
 		}
-
-		
 	}
 
 	private static void processListCommand() {
@@ -100,5 +108,15 @@ public class MainForSpring {
 		System.out.println("change 이메일 현재비번 변경비번");
 		System.out.println();
 	}
+
+	private static void processInfoCommand(String[] arg) {
+		MemberInfoPrinter memberInfoPrinter =ctx.getBean("memberInfoPrinter", MemberInfoPrinter.class);
+		memberInfoPrinter.printMemberInfo(arg[1]);
+	}
 	
+	private static void processVersionCommand() {
+		VersionPrinter versionPrinter = ctx.getBean("versionPrinter", VersionPrinter.class);
+		versionPrinter.print();
+	}
+
 }
