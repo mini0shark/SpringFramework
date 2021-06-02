@@ -1,8 +1,8 @@
-package chap04.member;
+package chap05.member;
 
 import java.time.LocalDateTime;
 
-import chap03.exceptions.WrongIdPasswordException;
+import chap05.exceptions.WrongIdPasswordException;
 
 public class Member {
 	private Long id;
