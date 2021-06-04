@@ -1,5 +1,7 @@
 package chap05.config;
 
+import java.time.LocalDateTime;
+
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -11,14 +13,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 
+import chap05.member.Member;
 import chap05.member.MemberPrinter;
 import chap05.member.MemberSummaryPrinter;
 import chap05.member.VersionPrinter;
 
 
 @Configuration
-@ComponentScan(basePackages = {"chap05"},
-excludeFilters = @Filter(type=FilterType.ASPECTJ, pattern = "chap05.*Dao"))
+@ComponentScan(basePackages = {"chap05"})
 public class AppCtx {
 	@Bean
 	@Qualifier("printer")
