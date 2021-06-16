@@ -8,7 +8,10 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 import chap08.ctx.AppCtx;
 import chap08.dao.MemberDao;
+import chap08.excptions.MemberNotFoundException;
+import chap08.excptions.WrongIdPasswordException;
 import chap08.member.Member;
+import chap08.service.ChangePasswordService;
 
 public class MainForMemberDao {
 	private static MemberDao memberDao;
@@ -19,9 +22,21 @@ public class MainForMemberDao {
 		
 		memberDao = ctx.getBean(MemberDao.class);
 		
-		selectAll();
-		updateMember();
-		insertMember();
+//		selectAll();
+//		updateMember();
+//		insertMember();
+		System.out.println("--------------------------start--------------------------");
+		
+		ChangePasswordService cps=ctx.getBean("changePasswordService", ChangePasswordService.class);
+		
+		try {
+			cps.changePassword("mini0shark@naver.com", "1234", "1111");
+			System.out.println("암호를 변경했습니다.");
+		}catch(MemberNotFoundException me) {
+			System.out.println("회원 데이터가 존재하지 않습니다.");
+		}catch(WrongIdPasswordException we) {
+			System.out.println("암호가 일치하지 않습니다.");
+		}
 		
 		ctx.close();
 	}

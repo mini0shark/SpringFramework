@@ -3,10 +3,19 @@ package chap08.ctx;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import chap08.dao.MemberDao;
+import chap08.printer.MemberInfoPrinter;
+import chap08.printer.MemberListPrinter;
+import chap08.printer.MemberPrinter;
+import chap08.service.ChangePasswordService;
+import chap08.service.MemberRegisterService;
 
 @Configuration
+@EnableTransactionManagement
 public class AppCtx {
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource() {
@@ -27,5 +36,36 @@ public class AppCtx {
 	@Bean
 	public MemberDao memberDao() {
 		return new MemberDao(dataSource());
+	}
+	
+	@Bean
+	public PlatformTransactionManager transactionManager() {
+		DataSourceTransactionManager tm = new DataSourceTransactionManager();
+		tm.setDataSource(dataSource());
+		return tm;
+	}
+	@Bean
+	public MemberRegisterService memberRegisterService() {
+		MemberRegisterService memberRegisterService = new MemberRegisterService(memberDao());
+		return memberRegisterService;
+	}
+	@Bean
+	public ChangePasswordService changePasswordService() {
+		ChangePasswordService changePasswordService = new ChangePasswordService(memberDao());
+		return changePasswordService;
+	}
+	@Bean
+	public MemberPrinter memberPrinter() {
+		return new MemberPrinter();
+	}
+	@Bean
+	public MemberListPrinter listPrinter() {
+		return new MemberListPrinter(memberDao(), memberPrinter());
+	}
+	
+	@Bean
+	public MemberInfoPrinter memberInfoPrinter() {
+		MemberInfoPrinter memberInfoPrinter=new MemberInfoPrinter(memberDao(), memberPrinter());
+		return memberInfoPrinter;
 	}
 }

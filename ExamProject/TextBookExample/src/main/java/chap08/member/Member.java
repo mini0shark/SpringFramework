@@ -2,7 +2,8 @@ package chap08.member;
 
 import java.time.LocalDateTime;
 
-import chap05.exceptions.WrongIdPasswordException;
+import chap08.excptions.WrongIdPasswordException;
+
 
 public class Member {
 
