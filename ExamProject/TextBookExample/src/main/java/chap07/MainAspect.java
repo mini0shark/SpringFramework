@@ -1,5 +1,8 @@
 package chap07;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import chap07.calc.Calculator;

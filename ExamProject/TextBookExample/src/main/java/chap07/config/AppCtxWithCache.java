@@ -1,5 +1,8 @@
 package chap07.config;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -26,5 +29,13 @@ public class AppCtxWithCache {
 	@Bean
 	public Calculator calculator() {
 		return new RecCalculator();
+	}
+	
+	public String session(HttpServletRequest req) {
+
+		HttpSession session =req.getSession();
+		
+		session.getAttribute("ad");
+		return "asdf";
 	}
 }
