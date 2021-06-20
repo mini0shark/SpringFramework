@@ -1,0 +1,20 @@
+package example.springbootexam.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HelloController {
+    @GetMapping("hello")
+    public String hello(Model model){
+        model.addAttribute("data", "Spring!!");
+        return "hello";
+    }
+
+    @GetMapping("second")
+    public String second(Model model){
+        model.addAttribute("data", "Spring!!");
+        return "second";
+    }
+}

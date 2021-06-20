@@ -10,7 +10,7 @@ public class DbConfig {
 	public DataSource dataSource() {
 		DataSource ds = new DataSource();
 		ds.setDriverClassName("org.mariadb.jdbc.Driver");
-		ds.setUrl("jdbc:mariadb://localhost:3306/spring5s?characterEncoding=utf8");
+		ds.setUrl("jdbc:mariadb://localhost:3306/spring5fs?characterEncoding=utf8");
 		ds.setUsername("spring5");
 		ds.setPassword("spring5");
 		ds.setInitialSize(2);	// 커넥션 풀 초기화 시 초기 커넥션 개수를 지정한다.(기본 10개)
