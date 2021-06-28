@@ -4,11 +4,13 @@ import example.springbootexam.domain.Member;
 import example.springbootexam.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 //@Service
+@Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
 
@@ -31,6 +33,8 @@ public class MemberService {
     private void validateDuplicateMember(Member member) {
         memberRepository.findByName(member.getName())
              .ifPresent(m->{
+                 System.out.println(m.getName());
+                 System.out.println(member.getName());
                    throw new IllegalStateException("이미 존재하는 값입니다.");
                });
     }
