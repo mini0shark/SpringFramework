@@ -1,5 +1,6 @@
 package example.springbootexam;
 
+import example.springbootexam.aop.TimeTraceAop;
 import example.springbootexam.repository.*;
 import example.springbootexam.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,10 @@ public class SpringConfig {
         return new MemberService(memberRepository);
     }
 
+//    @Bean
+//    public TimeTraceAop timeTraceAop(){
+//        return new TimeTraceAop();
+//    }
 //    @Bean
 //    public MemberRepository memberRepository(){
 ////        return new MemoryMemberRepository();
