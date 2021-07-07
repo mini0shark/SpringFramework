@@ -2,27 +2,22 @@ package com.todoList.todo.controller;
 
 import com.todoList.todo.dto.TodoItem;
 import com.todoList.todo.service.TodoListService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping("todo")
-public class TodoController {
+@RequestMapping("todo-list")
+public class TodoListController {
     private final TodoListService todoService;
 
-    public TodoController(TodoListService todoService) {
+    public TodoListController(TodoListService todoService) {
         this.todoService = todoService;
     }
 
     @GetMapping
-    public List<TodoItem> getTodo(){
+    public List<TodoItem> getTodoList(){
         return todoService.findTodoItems();
-    }
-    @PostMapping
-    public TodoItem saveTodo(@RequestBody TodoItem todoItem){
-        return todoService.join(todoItem);
     }
 }
