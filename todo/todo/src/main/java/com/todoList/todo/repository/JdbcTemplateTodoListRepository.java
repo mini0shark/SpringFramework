@@ -2,11 +2,14 @@ package com.todoList.todo.repository;
 
 import com.todoList.todo.dto.TodoItem;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -38,6 +41,23 @@ public class JdbcTemplateTodoListRepository implements TodoListRepository {
     }
 
     @Override
+    public TodoItem update(TodoItem todoItem) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement pstmt = con.prepareStatement(
+                        "update todoList set fin = ? where id = ?"
+                );
+                pstmt.setBoolean(1, todoItem.isFin());
+                pstmt.setLong(2, todoItem.getId());
+
+                return pstmt;
+            }
+        });
+        return todoItem;
+    }
+
+    @Override
     public Optional<TodoItem> findById(Long id) {
         List<TodoItem> result = jdbcTemplate.query("select * from todoList where id = ?", todoRowMapper(), id);
         return result.stream().findAny();
@@ -48,6 +68,19 @@ public class JdbcTemplateTodoListRepository implements TodoListRepository {
     public List<TodoItem> findAll() {
         List<TodoItem> result = jdbcTemplate.query("select * from todoList", todoRowMapper());
         return result;
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        long result = jdbcTemplate.update(con -> {
+            PreparedStatement pstmt = con.prepareStatement(
+                    "delete from todoList where id = ?"
+            );
+            pstmt.setLong(1, id);
+
+            return pstmt;
+        });
+        return result>0;
     }
 
     private RowMapper<TodoItem> todoRowMapper() {

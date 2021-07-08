@@ -7,6 +7,9 @@ import java.util.Optional;
 
 public interface TodoListRepository {
     public TodoItem save(TodoItem todoItem);
+    public TodoItem update(TodoItem todoItem);
     public Optional<TodoItem> findById(Long id);
     public List<TodoItem> findAll();
+
+    Boolean delete(Long id);
 }

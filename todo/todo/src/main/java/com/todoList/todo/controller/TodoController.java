@@ -25,4 +25,13 @@ public class TodoController {
     public TodoItem saveTodo(@RequestBody TodoItem todoItem){
         return todoService.join(todoItem);
     }
+    @PutMapping
+    public TodoItem updateTodo(@RequestBody TodoItem todoItem){
+        return todoService.update(todoItem);
+    }
+    @DeleteMapping("/{id}")
+    public Boolean deleteTodo(@PathVariable("id") Long id){
+        System.out.println(id);
+        return todoService.delete(id);
+    }
 }

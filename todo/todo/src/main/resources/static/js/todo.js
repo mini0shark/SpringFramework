@@ -7,29 +7,58 @@ const todo = document.getElementById("todo1");
 
 
 const TODOS_LS = 'toDos';   //localStorage
-let todoList = []
+let todos = new Map();
 
-function saveToDos(){
-    localStorage.setItem(TODOS_LS, JSON.stringify(todoList));
-}
 
 
 function deleteTodo(event){
     const btn = event.target;
-    const li = btn.parentNode;
-    toDoList.removeChild(li);
-    const cleanToDos = todoList.filter(function(toDo){return parseInt(li.id)!==parseInt(toDo.id)});
-    console.log(cleanToDos, li.id);
-    todoList = cleanToDos;
-    saveToDos();
+    fetch("http://localhost:8080/todo/"+btn.name,{
+        method :'DELETE'
+    }).then(function(response){
+        return response.json();
+    }).then(function(json){
+        if(json){
+            const li = btn.parentNode;
+            todos.delete()
+            toDoList.removeChild(li);
+            const cleanToDos = todoList.filter(function(toDo){return parseInt(li.id)!==parseInt(toDo.id)});
+            console.log(cleanToDos, li.id);
+        }else{
+            alert("서버의 문제로 실패했습니다.");
+        }
+    });
+    
 }
 function finTodo(event){
     const shape = event.target.parentNode;
-    if(shape.className==="done"){
-        shape.className="";
+    const todoId = Number(shape.id);
+    const element = todos.get(todoId);
+    console.log(todos);
+    console.log(todoId);
+    if(element.fin){
+        element.fin=false;
     }else{
-        shape.className="done";
+        element.fin=true;
     }
+    
+    fetch("http://localhost:8080/todo",{
+        method :'PUT',
+        headers:{
+            'Content-Type': 'application/json',
+            'charset':'utf-8'
+        }, body:JSON.stringify(element)
+    }).then(function(response){
+        return response.json();
+    }).then(function(json){
+        if(json.fin){
+            shape.className="contents done";
+        }else{
+            shape.className="contents";
+        }
+        console.log(json);
+        todos.set(todoId, json);
+    });
 }
 function afterResponse(element){
     const li = document.createElement("li");
@@ -37,34 +66,31 @@ function afterResponse(element){
     const shape = document.createElement("span");
     const subject = document.createElement("span");
     const content = document.createElement("span");
-    const newId = todoList.length+1;
     delBtn.innerText = "X";
+    delBtn.name = element.id;
     delBtn.addEventListener("click", deleteTodo);
     subject.innerHTML = element.subject;
     content.innerHTML = element.content;
+    shape.id=element.id;
     shape.appendChild(subject);
     shape.appendChild(content);
+    if(element.fin){
+        shape.className="contents done";
+    }else{
+        shape.className="contents";
+    }
     shape.addEventListener("click", finTodo);
     li.appendChild(shape);
     li.appendChild(delBtn);
     toDoList.appendChild(li);
-
-    const toDoObj={
-        id:element.id,
-        subject:element.subject,
-        content:element.content,
-        createDate:element.createDate,
-        fin:element.fin
-    };
-    todoList.push(toDoObj);
 }
-function paintTodo(sbj, cnt){
+function registTodo(sbj, cnt){
     fetch("http://localhost:8080/todo",{
         method :'POST',
         headers:{
             'Content-Type': 'application/json',
             'charset':'utf-8'
-        }
+        }, body:JSON.stringify({subject:sbj, content:cnt})
     }).then(function(response){
         return response.json();
     }).then(function(json){
@@ -76,7 +102,7 @@ function handleSubmit(event){
     event.preventDefault();
     const currentSubject = toDoSubject.value;
     const currentContent = toDoContent.value;
-    paintTodo(currentSubject, currentContent);
+    registTodo(currentSubject, currentContent);
 }
 function loadToDos(){
     fetch("http://localhost:8080/todo-list").then(function(response){
@@ -84,23 +110,13 @@ function loadToDos(){
     }).then(function(json){
         console.log(json);
         json.forEach(element=>{
+            todos.set(element.id, element);
             afterResponse(element);
         })
     });
 }
-function ex(){
-    const removeList = []
-    const childList = toDoList.childNodes
-    childList.forEach(function(element){
-        removeList.push(element);
-    });
-    removeList.forEach(function(e){
-        toDoList.removeChild(e);
-    })
-}
 function init(){
     loadToDos();
-    //ex();
     toDoForm.addEventListener("submit", handleSubmit);
 }
 init();
