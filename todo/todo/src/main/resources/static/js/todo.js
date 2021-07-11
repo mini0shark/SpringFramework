@@ -115,8 +115,23 @@ function loadToDos(){
         })
     });
 }
+function find(event){
+    event.preventDefault();
+    const id = document.querySelector("#find-id").value;
+    fetch("http://localhost:8080/todo/"+id).then(function(response){
+        console.log(response);
+        return response.json();
+    }).then(function(json){
+        if(json.id===null){
+            alert("없는 글 입니다.");
+        }
+        console.log(json);
+    });
+}
 function init(){
     loadToDos();
     toDoForm.addEventListener("submit", handleSubmit);
+    const findSubmit = document.querySelector("#find");
+    findSubmit.addEventListener("submit", find);
 }
 init();

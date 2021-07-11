@@ -2,6 +2,7 @@ package com.todoList.todo.ctx;
 
 import com.todoList.todo.repository.JdbcTemplateTodoListRepository;
 import com.todoList.todo.repository.TodoListRepository;
+import com.todoList.todo.service.LoginService;
 import com.todoList.todo.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,8 @@ public class AppConfig {
     public TodoListService todoService(){
         return new TodoListService(todoListRepository());
     }
+    @Bean
+    public LoginService loginService(){ return new LoginService(); }
     @Bean
     public CharacterEncodingFilter characterEncodingFilter(){
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();

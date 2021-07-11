@@ -22,4 +22,9 @@ public class MainController {
         model.addAttribute("todos", todoItems);
         return "index";
     }
+
+    @RequestMapping("login-page")
+    private String test(){
+        return "login";
+    }
 }

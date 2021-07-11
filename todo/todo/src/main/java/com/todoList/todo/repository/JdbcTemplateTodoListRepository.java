@@ -42,18 +42,19 @@ public class JdbcTemplateTodoListRepository implements TodoListRepository {
 
     @Override
     public TodoItem update(TodoItem todoItem) {
-        jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement pstmt = con.prepareStatement(
-                        "update todoList set fin = ? where id = ?"
-                );
-                pstmt.setBoolean(1, todoItem.isFin());
-                pstmt.setLong(2, todoItem.getId());
-
-                return pstmt;
-            }
-        });
+        System.out.println(jdbcTemplate.update("update todoList set fin = ? where id = ?",todoItem.isFin(), todoItem.getId()));
+//        jdbcTemplate.update(new PreparedStatementCreator() {
+//            @Override
+//            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+//                PreparedStatement pstmt = con.prepareStatement(
+//                        "update todoList set fin = ? where id = ?"
+//                );
+//                pstmt.setBoolean(1, todoItem.isFin());
+//                pstmt.setLong(2, todoItem.getId());
+//
+//                return pstmt;
+//            }
+//        });
         return todoItem;
     }
 

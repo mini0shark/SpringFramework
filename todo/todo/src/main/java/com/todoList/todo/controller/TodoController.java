@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -17,9 +18,15 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping
-    public List<TodoItem> getTodo(){
-        return todoService.findTodoItems();
+    @GetMapping("/{id}")
+    public TodoItem getTodo(@PathVariable long id){
+        System.out.println(id);
+        Optional<TodoItem> item = todoService.findOne(id);
+        if(!item.isPresent()){
+            return new TodoItem();
+        }
+        System.out.println(item);
+        return item.get();
     }
     @PostMapping
     public TodoItem saveTodo(@RequestBody TodoItem todoItem){
