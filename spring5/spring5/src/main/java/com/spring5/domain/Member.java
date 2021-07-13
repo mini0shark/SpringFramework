@@ -1,4 +1,4 @@
-package com.spring5.member;
+package com.spring5.domain;
 
 import java.time.LocalDateTime;
 

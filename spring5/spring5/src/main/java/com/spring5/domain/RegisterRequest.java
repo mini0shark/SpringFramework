@@ -1,4 +1,4 @@
-package com.spring5.service;
+package com.spring5.domain;
 
 public class RegisterRequest {
 	private String email;

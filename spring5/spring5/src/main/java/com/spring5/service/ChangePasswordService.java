@@ -1,7 +1,7 @@
 package com.spring5.service;
 
 import com.spring5.excptions.MemberNotFoundException;
-import com.spring5.member.Member;
+import com.spring5.domain.Member;
 import com.spring5.repository.MemberRepository;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -2,12 +2,11 @@ package com.spring5.service;
 
 import java.time.LocalDateTime;
 
+import com.spring5.domain.RegisterRequest;
 import com.spring5.excptions.DuplicateMemberException;
-import com.spring5.member.Member;
+import com.spring5.domain.Member;
 import com.spring5.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 
 
 public class MemberRegisterService {
